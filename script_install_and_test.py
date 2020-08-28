@@ -61,14 +61,13 @@ def swipe_screen():
 def get_record():
     time.sleep(10)
     print("PASSANDO ARQUIVO GRAVADO PARA COMPUTADOR")
-    output = subprocess.Popen("adb shell pull /sdcard/DCIM/example.mp4 .", shell=True, stdout=subprocess.PIPE)
+    output = subprocess.Popen("adb shell pull /sdcard/DCIM/install_and_test.mp4 .", shell=True, stdout=subprocess.PIPE)
 
-device = get_devices() # passo 1 no original
+device = get_devices()
 record_screen()
 install_apps()
-# swipe_screen()
-get_screen(device) # passo 2 no original
-get_apps('Wikipédia') # passo 3 no original
+get_screen(device)
+get_apps('Wikipédia')
 get_record()
 
 #get_apps('AnkiDroid')
