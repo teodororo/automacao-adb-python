@@ -1,3 +1,5 @@
+# SCRIPT DOESNT WORK 
+
 import subprocess
 import xml.etree.ElementTree as ET
 import time
