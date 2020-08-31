@@ -75,12 +75,15 @@ record_screen()
 install_apps()
 get_screen(device)
 get_apps('Wikipédia')
+get_record()
+
+'''
+#get_apps('AnkiDroid')
 <<<<<<< HEAD
 =======
 uninstall_apps()
 >>>>>>> 35ca00c3e3eafe63a84168372b7f6baaa511310d
-get_record()
+'''
 
-#get_apps('AnkiDroid')
 
 
