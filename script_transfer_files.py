@@ -2,36 +2,46 @@ import subprocess
 import xml.etree.ElementTree as ET
 import time
 
-
-# Create file
+ 
+# Creates file
 def create_dir():
     # Command below might not work if you don't have root permissions 
-    process = subprocess.Popen('adb shell mkdir test_directory', shell=True, stdout=subprocess.PIPE)
-    process = subprocess.Popen('adb shell cd ./test_directory', shell=True, stdout=subprocess.PIPE)
-    process = subprocess.Popen('adb shell touch example.png', shell=True, stdout=subprocess.PIPE)
+    print("CREATING DIRECTORY")
+    subprocess.Popen('adb shell mkdir test_directory', shell=True, stdout=subprocess.PIPE)
+    time.sleep(5)
+    print("CREATING FILE INSIDE ./test_directory")
+    subprocess.Popen('adb shell touch /test_directory/example.txt', shell=True, stdout=subprocess.PIPE)
+    time.sleep(5)
 
+
+# Creates a copy of example.txt 
 def create_copy():
-    # a ->  preserve the specified attributes
-    # v -> verbose output
-    # r -> Copy directories recursively
-    process = subprocess.Popen('adb shell cp -avr test_directory ./sdcard', shell=True, stdout=subprocess.PIPE)
+    print("CREATING COPY") 
+    subprocess.Popen('adb shell cp /test_directory/example.txt /', shell=True, stdout=subprocess.PIPE)
+    time.sleep(5)
 
+# Changes directory's name 
 def rename_dir():
+    print("CHANGING DIRECTORY'S NAME") 
     # Using mv command
-    process = subprocess.Popen('adb shell mv test_directory new_directory', shell=True, stdout=subprocess.PIPE)
-    
-def move_dir():
-    process = subprocess.Popen('adb shell mv new_directory ./sdcard', shell=True, stdout=subprocess.PIPE)
+    subprocess.Popen('adb shell mv test_directory new_directory', shell=True, stdout=subprocess.PIPE)
+    time.sleep(5) 
 
-def remove_dir():
+# Changes directory's path  
+def move_dir():
+    print("MOVING DIRECTORY") 
+    subprocess.Popen('adb shell mv new_directory /sdcard', shell=True, stdout=subprocess.PIPE)
+    time.sleep(5) 
+
+def remove_dir_and_file():
     # Removes the old and the copy
-    process = subprocess.Popen('adb shell cd ./sdcard', shell=True, stdout=subprocess.PIPE)
-    process = subprocess.Popen('adb shell rm -r test_directory', shell=True, stdout=subprocess.PIPE)
-    process = subprocess.Popen('adb shell rm -r new_directory', shell=True, stdout=subprocess.PIPE)
-    
+    print("REMOVING DIRECTORY AND FILE") 
+    subprocess.Popen('adb shell rm example.txt', shell=True, stdout=subprocess.PIPE)
+    subprocess.Popen('adb shell rm -r /sdcard/new_directory', shell=True, stdout=subprocess.PIPE)
+
 
 create_dir()
 create_copy()
 rename_dir()
 move_dir()
-remove_dir()
+remove_dir_and_file()
