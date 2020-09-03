@@ -1,13 +1,11 @@
-# SCRIPT DOESNT WORK 
-
+# SCRIPT DOESNT WORK
 import subprocess
 import xml.etree.ElementTree as ET
 import time
 
-
 def record_screen():
     print("GRAVANDO TELA")
-    subprocess.Popen("adb shell screenrecord --time-limit 30 /sdcard/DCIM/install_and_test.mp4", shell=True, stdout=subprocess.PIPE)
+    subprocess.Popen("adb shell screenrecord --time-limit 45 /sdcard/DCIM/install_and_test.mp4", shell=True, stdout=subprocess.PIPE)
     time.sleep(3)
 
 def get_devices():
@@ -24,7 +22,6 @@ def get_screen(serial):
     print(output)
     output = subprocess.Popen('adb -s %s pull /sdcard/window_dump.xml'%serial,shell=True,stdout=subprocess.PIPE).communicate()[0]
     print(output)
-
 
 def tap_screen(app_name, x, y):
     print("ABRINDO %s" % app_name)
@@ -49,26 +46,31 @@ def get_apps(name_app):
     app = test_app(root, name_app)
 
 def install_apps():
-    print("INSTALANDO APK")
+    print("INSTALANDO APKs")
     swipe_screen()
+    time.sleep(2)
     output = subprocess.Popen("adb install ./apks/wikipedia.apk", shell=True, stdout=subprocess.PIPE)
-    # output = subprocess.Popen("adb install ./apks/ankidroid.apk", shell=True, stdout=subprocess.PIPE)
+    time.sleep(2)
+    output = subprocess.Popen("adb install ./apks/ankidroid.apk", shell=True, stdout=subprocess.PIPE)
     time.sleep(3)
 
 def uninstall_apps():
-    print("DESINSTALANDO APK")
+    print("DESINSTALANDO APKs")
     swipe_screen()
     time.sleep(2)
     output = subprocess.Popen("adb uninstall org.wikipedia", shell=True, stdout=subprocess.PIPE)
     time.sleep(2)
+    output = subprocess.Popen("adb uninstall com.ichi2.anki", shell=True, stdout=subprocess.PIPE)
+    time.sleep(2)
     output = subprocess.Popen("adb shell input keyevent 4", shell=True, stdout=subprocess.PIPE)
 
 def swipe_screen():
+    time.sleep(2)
     output = subprocess.Popen("adb shell input swipe 300 2000 300 500 200", shell=True, stdout=subprocess.PIPE)
-    time.sleep(3)
+    time.sleep(2)
 
 def get_record():
-    time.sleep(10)
+    time.sleep(7)
     print("PASSANDO ARQUIVO GRAVADO PARA COMPUTADOR")
     output = subprocess.Popen("adb shell pull /sdcard/DCIM/install_and_test.mp4 .", shell=True, stdout=subprocess.PIPE)
 
@@ -77,15 +79,10 @@ record_screen()
 install_apps()
 get_screen(device)
 get_apps('Wikipédia')
-get_record()
-
-'''
-#get_apps('AnkiDroid')
-<<<<<<< HEAD
-=======
+swipe_screen()
+get_apps('AnkiDroid')
 uninstall_apps()
->>>>>>> 35ca00c3e3eafe63a84168372b7f6baaa511310d
-'''
+get_record()
 
 
 
