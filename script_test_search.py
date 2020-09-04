@@ -79,4 +79,7 @@ search('hefesto%suea')
 def open_app():
     output = subprocess.Popen("adb shell monkey -p com.android.chrome 1", shell=True, stdout=subprocess.PIPE)
     text()
+    
+adb shell input touchscreen swipe 440 1615 440 1615 2000 (comando para simular um "long press")
+
 '''
