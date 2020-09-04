@@ -11,10 +11,24 @@ def get_devices():
     output = output.replace("\\t", "")
     return output
 
-'''     GRAVAR A TELA (VARIACAO DO PRINT)     '''
+'''     GRAVAR A TELA     '''
 def record_screen():
     print("GRAVANDO TELA")
     output = subprocess.Popen("adb shell screenrecord --time-limit 20 /sdcard/DCIM/example.mp4", shell=True, stdout=subprocess.PIPE)
+
+def event_home():
+    print("Voltando a tela inicial")
+    output = subprocess.Popen("adb shell input keyevent 3", shell=True, stdout=subprocess.PIPE)
+    time.sleep(2)
+
+def event_back():
+    print("Voltando a tela anterior")
+    output = subprocess.Popen("adb shell input keyevent 4", shell=True, stdout=subprocess.PIPE)
+    time.sleep(2)
+
+def swipe_screen():
+    output = subprocess.Popen("adb shell input swipe 300 2000 300 500 500", shell=True, stdout=subprocess.PIPE)
+    time.sleep(2)
 
 def get_screen(serial):
     output = subprocess.Popen('adb -s %s shell uiautomator dump'%serial,shell=True,stdout=subprocess.PIPE).communicate()[0]
@@ -25,11 +39,6 @@ def get_screen(serial):
 def tap_screen(app_name, x, y):
     print("Abrindo %s" % app_name)
     output = subprocess.Popen("adb shell input tap %s %s" % (x, y), shell=True, stdout=subprocess.PIPE)
-    time.sleep(3)
-    operation()
-    time.sleep(5)
-    print("Voltando a tela anterior")
-    output = subprocess.Popen("adb shell input keyevent 4", shell=True, stdout=subprocess.PIPE)
 
 def test_app(node, app_name):
     if node.attrib.get('text') == app_name:
@@ -41,32 +50,33 @@ def test_app(node, app_name):
         for n in node.findall('node'):
             test_app(n, app_name)
 
-def get_apps():
+def get_apps(name_app):
     xml = ET.parse('window_dump.xml')
     root = xml.getroot()
-    app = test_app(root, 'Chrome')
+    app = test_app(root, name_app)
+
+def search(search_text):
+    get_screen(device)
+    time.sleep(2)
+    get_apps('Pesquisar ou digitar endereço da Web')
+    time.sleep(2)
+    output = subprocess.Popen("adb shell input text %s" %search_text, shell=True, stdout=subprocess.PIPE)
+    time.sleep(1)
+    output = subprocess.Popen("adb shell input keyevent 66", shell=True, stdout=subprocess.PIPE)
+    time.sleep(2)
+    swipe_screen()
+    event_back()
+    event_home()
+
+
+device = get_devices()
+record_screen()
+get_screen(device)
+get_apps('Chrome')
+search('hefesto%suea')
 
 '''
 def open_app():
     output = subprocess.Popen("adb shell monkey -p com.android.chrome 1", shell=True, stdout=subprocess.PIPE)
     text()
 '''
-
-def operation():
-    #get_screen(device)
-    output = subprocess.Popen("adb shell input tap 77 630", shell=True, stdout=subprocess.PIPE)
-    time.sleep(1)
-    search = "hefesto%suea"
-    output = subprocess.Popen("adb shell input text %s" %search, shell=True, stdout=subprocess.PIPE)
-    time.sleep(1)
-    output = subprocess.Popen("adb shell input keyevent 66", shell=True, stdout=subprocess.PIPE)
-    time.sleep(2)
-    output = subprocess.Popen("adb shell input swipe 300 2000 300 500", shell=True, stdout=subprocess.PIPE)
-    time.sleep(1)
-
-
-device = get_devices() # passo 1 no original
-record_screen()
-get_screen(device) # passo 2 no original
-#open_app()
-get_apps() # passo 3 no original
