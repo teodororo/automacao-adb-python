@@ -1,2 +1,8 @@
-import script_test_open_app_v2 as teste
-teste.record_screen()
+import script_unified as adbtest
+
+#Print Screen-OK
+#Gravar Tela - ok
+#Simular abrir um app por toque
+#Listar apps na tela
+
+adbtest.record_screen()
