@@ -5,4 +5,4 @@ import script_unified as adbtest
 #Simular abrir um app por toque
 #Listar apps na tela
 
-adbtest.record_screen()
+adbtest.open_app("Play Store")

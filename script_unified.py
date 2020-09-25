@@ -45,7 +45,14 @@ def tap_screen(app_name, x, y):
     print("Voltando a tela anterior")
     output = subprocess.Popen("adb shell input keyevent 4", shell=True, stdout=subprocess.PIPE)
 
-def open_app(node, app_name):#Abre o app
+def open_app(app_name):#Abre o app
+    get_elements_screen()
+    xml = ET.parse('window_dump.xml')
+    node = xml.getroot()
+
+    print(node.attrib.)
+    print(type(node))
+
     if node.attrib.get('text') == app_name:
         position = node.attrib.get('bounds').split(']')[0]
         position = position.replace("[", "").split(",")
@@ -53,14 +60,8 @@ def open_app(node, app_name):#Abre o app
         tap_screen(app_name, position[0], position[1])
     else:
         for n in node.findall('node'):
-            open_app(n, app_name)
-
-
-def get_apps():
-    xml = ET.parse('window_dump.xml')
-    root = xml.getroot()
-    app = open_app(root, 'Play Store')
-
+            # open_app(app_name)
+            pass
 
 # Creates file
 def create_dir():
